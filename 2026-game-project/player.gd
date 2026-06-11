@@ -2,6 +2,7 @@ extends CharacterBody2D
 
 var speed: float = 300.0
 var sprint: float = 500.0
+var can_sprint: = false
 
 func _process(delta: float) -> void:
 	var direction: Vector2 = Vector2(0.0,0.0)
