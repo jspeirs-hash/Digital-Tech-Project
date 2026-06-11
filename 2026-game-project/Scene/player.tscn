@@ -1,0 +1,27 @@
+[gd_scene format=3 uid="uid://brrfwon1vtmt2"]
+
+[ext_resource type="Script" uid="uid://6loliwjns4ui" path="res://player.gd" id="1_kelma"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_y8w33"]
+size = Vector2(40, 40)
+
+[node name="Player" type="CharacterBody2D" unique_id=1616124246]
+script = ExtResource("1_kelma")
+
+[node name="Camera2D" type="Camera2D" parent="." unique_id=433131879]
+position_smoothing_enabled = true
+position_smoothing_speed = 7.0
+rotation_smoothing_enabled = true
+rotation_smoothing_speed = 6.0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1576846424]
+position = Vector2(1, 0)
+shape = SubResource("RectangleShape2D_y8w33")
+
+[node name="ColorRect" type="ColorRect" parent="." unique_id=1941502568]
+offset_left = -19.0
+offset_top = -20.0
+offset_right = 21.0
+offset_bottom = 20.0
+
+[node name="Dash" type="Timer" parent="." unique_id=1934258004]
