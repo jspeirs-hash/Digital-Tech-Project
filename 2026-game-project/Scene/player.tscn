@@ -10,9 +10,9 @@ script = ExtResource("1_kelma")
 
 [node name="Camera2D" type="Camera2D" parent="." unique_id=433131879]
 position_smoothing_enabled = true
-position_smoothing_speed = 7.0
+position_smoothing_speed = 10.0
 rotation_smoothing_enabled = true
-rotation_smoothing_speed = 6.0
+rotation_smoothing_speed = 10.0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1576846424]
 position = Vector2(1, 0)
