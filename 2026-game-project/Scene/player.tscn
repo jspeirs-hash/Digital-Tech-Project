@@ -5,10 +5,16 @@
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_y8w33"]
 size = Vector2(40, 40)
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_kelma"]
+size = Vector2(38, 38)
+
 [node name="Player" type="CharacterBody2D" unique_id=1616124246]
+position = Vector2(-1, 0)
 script = ExtResource("1_kelma")
+dash_duration = 0.08
 
 [node name="Camera2D" type="Camera2D" parent="." unique_id=433131879]
+position = Vector2(1, 0)
 position_smoothing_enabled = true
 position_smoothing_speed = 10.0
 rotation_smoothing_enabled = true
@@ -23,5 +29,20 @@ offset_left = -19.0
 offset_top = -20.0
 offset_right = 21.0
 offset_bottom = 20.0
+metadata/_edit_use_anchors_ = true
 
-[node name="Dash" type="Timer" parent="." unique_id=1934258004]
+[node name="Cooldown_dash" type="Timer" parent="." unique_id=1934258004 groups=["Dash"]]
+wait_time = 3.0
+one_shot = true
+
+[node name="Duration_dash" type="Timer" parent="." unique_id=1253106665 groups=["Dash"]]
+wait_time = 3.0
+one_shot = true
+
+[node name="Hitbox" type="Node" parent="." unique_id=1449455874]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Hitbox" unique_id=1292680991]
+shape = SubResource("RectangleShape2D_kelma")
+
+[connection signal="timeout" from="Cooldown_dash" to="." method="_Cooldown_Dash_Timeout"]
+[connection signal="timeout" from="Duration_dash" to="." method="_Duration_Dash_Timeout"]
