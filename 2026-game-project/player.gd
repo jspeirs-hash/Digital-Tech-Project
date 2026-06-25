@@ -1,6 +1,7 @@
 extends CharacterBody2D
 
-@export var walk_speed: float = 260.0
+#movement
+@export var walk_speed: float = 100.0
 @export var sprint_speed: float = 320.0
 @export var dash_speed: float = 1000.0
 @export var dash_duration: float = 3.0
@@ -11,23 +12,40 @@ var dash_direction: Vector2 = Vector2.ZERO
 var can_dash = true
 var is_dashing = false
 var can_sprint: = false
+var last_direction: Vector2 = Vector2.RIGHT
+var s_direction: Vector2 = Vector2.ZERO
+
+#Spawner
+@export var pivot: CharacterBody2D
+@export var attack_scene: PackedScene
+@export var spawn_attack: Marker2D
+@export var sprite: AnimatedSprite2D
 
 func _ready() -> void:
 	pass
 
 func _physics_process(delta: float) -> void:
-	var direction: Vector2 = Vector2.ZERO
-	direction.x = Input.get_axis("ui_left", "ui_right")
-	direction.y = Input.get_axis("ui_up", "ui_down")
+	process_movement()
+	move_and_slide()
 	
-	velocity = walk_speed * direction.normalized()
+	
+func process_movement() -> void:
+	var direction := Input.get_vector("Left", "Right", "Up", "Down")
+	
+	if direction != Vector2.ZERO:
+		velocity = direction * walk_speed
+		last_direction = direction
+		s_direction = direction
+	else:
+		velocity = Vector2.ZERO
+	
+	process_animation(last_direction)
 	
 	#dashing mechanic
-	if Input.is_action_just_pressed("Dash") and can_dash and direction != Vector2.ZERO:
-		
+	if Input.is_action_just_pressed("Dash") and can_dash and s_direction != Vector2.ZERO:
 		is_dashing = true
 		can_dash = false
-		dash_direction = direction.normalized()
+		dash_direction = s_direction
 		
 		var Cooldown_timer = get_node("Cooldown_dash")
 		Cooldown_timer.wait_time = dash_cooldown
@@ -48,8 +66,22 @@ func _physics_process(delta: float) -> void:
 		elif Input.is_action_just_released("Sprint"):
 			can_sprint = false
 			walk_speed = current_speed
-	move_and_slide()
 
+func process_animation(direction) -> void:
+	if velocity != Vector2.ZERO:
+		change_animation("walk", direction)
+	else:
+		change_animation("idle", direction)
+
+func change_animation(prefix: String, dir: Vector2) -> void:
+	if dir.x != 0:
+		sprite.flip_h = dir.x < 0
+		sprite.play(prefix + "_right")
+	elif dir.y < 0:
+		sprite.play(prefix + "_up")
+	elif dir.y > 0:
+		sprite.play(prefix + "_down")
+	
 func _Duration_Dash_Timeout() -> void:
 	is_dashing = false
 	print("Duration")
@@ -57,3 +89,9 @@ func _Duration_Dash_Timeout() -> void:
 func _Cooldown_Dash_Timeout() -> void:
 	can_dash = true
 	print("Cooldown")
+
+func _attack() -> void:
+	var attack = attack_scene.instantiate()
+	attack.rotation = pivot.rotation
+	attack.global_position = spawn_attack.global_position
+	add_sibling(attack)

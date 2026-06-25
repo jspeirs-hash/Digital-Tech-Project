@@ -1,0 +1,6 @@
+[gd_scene format=3 uid="uid://i3oyhcxl8cqy"]
+
+[ext_resource type="Script" uid="uid://co1orr3chseqn" path="res://daft.gd" id="1_ps4m3"]
+
+[node name="Node2D" type="Node2D" unique_id=769501792]
+script = ExtResource("1_ps4m3")
