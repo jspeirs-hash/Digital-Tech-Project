@@ -4,9 +4,6 @@
 [ext_resource type="PackedScene" uid="uid://bfbbqicktrnbg" path="res://Scene/Action_Swing.tscn" id="2_y8w33"]
 [ext_resource type="Texture2D" uid="uid://drig5uofy461j" path="res://mystic_woods_free_2.2/sprites/characters/player.png" id="3_xa75v"]
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_y8w33"]
-size = Vector2(40, 40)
-
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_kelma"]
 size = Vector2(38, 38)
 
@@ -420,7 +417,19 @@ animations = [{
 "speed": 5.0
 }]
 
-[node name="Player" type="CharacterBody2D" unique_id=1616124246 node_paths=PackedStringArray("pivot", "spawn_attack", "sprite")]
+[sub_resource type="Animation" id="Animation_xa75v"]
+resource_name = "Attack"
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_58ae2"]
+_data = {
+&"Attack": SubResource("Animation_xa75v")
+}
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_xa75v"]
+radius = 3.0
+
+[node name="Player" type="CharacterBody2D" unique_id=1616124246 node_paths=PackedStringArray("pivot", "spawn_attack", "sprite") groups=["player"]]
+collision_layer = 3
 script = ExtResource("1_kelma")
 dash_duration = 0.08
 pivot = NodePath(".")
@@ -429,17 +438,12 @@ spawn_attack = NodePath("Marker/Marker2D")
 sprite = NodePath("AnimatedSprite2D")
 
 [node name="Camera2D" type="Camera2D" parent="." unique_id=433131879]
-position = Vector2(1, 0)
+position = Vector2(1, -7)
 zoom = Vector2(3.505, 3.505)
 position_smoothing_enabled = true
 position_smoothing_speed = 10.0
 rotation_smoothing_enabled = true
 rotation_smoothing_speed = 10.0
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1576846424]
-visible = false
-position = Vector2(1, 0)
-shape = SubResource("RectangleShape2D_y8w33")
 
 [node name="ColorRect" type="ColorRect" parent="." unique_id=1941502568]
 visible = false
@@ -458,21 +462,35 @@ wait_time = 3.0
 one_shot = true
 
 [node name="Hitbox" type="Node2D" parent="." unique_id=370152410]
-position = Vector2(1, 0)
+position = Vector2(1, -7)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Hitbox" unique_id=1292680991]
 visible = false
 shape = SubResource("RectangleShape2D_kelma")
 
 [node name="Marker" type="Node2D" parent="." unique_id=2108594504]
+position = Vector2(0, -7)
 
 [node name="Marker2D" type="Marker2D" parent="Marker" unique_id=1051960675]
-position = Vector2(20, 0)
+position = Vector2(7, 8)
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=999014557]
 texture_filter = 1
+position = Vector2(0, -7)
 sprite_frames = SubResource("SpriteFrames_c68nv")
-animation = &"walk_right"
+animation = &"idle_down"
+
+[node name="Ui" type="Node2D" parent="." unique_id=2029416239]
+position = Vector2(0, -7)
+
+[node name="CanvasLayer" type="CanvasLayer" parent="Ui" unique_id=597448941]
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=2115800801]
+libraries/ = SubResource("AnimationLibrary_58ae2")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1576846424]
+position = Vector2(0, 7)
+shape = SubResource("CircleShape2D_xa75v")
 
 [connection signal="timeout" from="Cooldown_dash" to="." method="_Cooldown_Dash_Timeout"]
 [connection signal="timeout" from="Duration_dash" to="." method="_Duration_Dash_Timeout"]

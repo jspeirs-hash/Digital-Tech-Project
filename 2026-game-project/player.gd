@@ -12,6 +12,7 @@ var dash_direction: Vector2 = Vector2.ZERO
 var can_dash = true
 var is_dashing = false
 var can_sprint: = false
+var idle = true
 var last_direction: Vector2 = Vector2.RIGHT
 var s_direction: Vector2 = Vector2.ZERO
 
@@ -27,6 +28,7 @@ func _ready() -> void:
 func _physics_process(delta: float) -> void:
 	process_movement()
 	move_and_slide()
+	_attack()
 	
 	
 func process_movement() -> void:
@@ -91,7 +93,6 @@ func _Cooldown_Dash_Timeout() -> void:
 	print("Cooldown")
 
 func _attack() -> void:
-	var attack = attack_scene.instantiate()
-	attack.rotation = pivot.rotation
-	attack.global_position = spawn_attack.global_position
-	add_sibling(attack)
+	if Input.is_action_just_pressed("Attack"):
+		sprite.play("attack_right")
+	
