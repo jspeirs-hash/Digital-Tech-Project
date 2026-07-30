@@ -6,6 +6,7 @@ extends CharacterBody2D
 @export var dash_speed: float = 1000.0
 @export var dash_duration: float = 3.0
 @export var dash_cooldown: float = 3.0
+@export var health: float = 5.0
 
 var current_speed = walk_speed
 var dash_direction: Vector2 = Vector2.ZERO
@@ -15,12 +16,17 @@ var can_sprint: = false
 var idle = true
 var last_direction: Vector2 = Vector2.RIGHT
 var s_direction: Vector2 = Vector2.ZERO
+var attack = false
+var animation_movement = true
+var attack_cooldown = false
+var on_attack = true
 
 #Spawner
 @export var pivot: CharacterBody2D
 @export var attack_scene: PackedScene
 @export var spawn_attack: Marker2D
 @export var sprite: AnimatedSprite2D
+@export var attack_timer: Timer
 
 func _ready() -> void:
 	pass
@@ -34,7 +40,7 @@ func _physics_process(delta: float) -> void:
 func process_movement() -> void:
 	var direction := Input.get_vector("Left", "Right", "Up", "Down")
 	
-	if direction != Vector2.ZERO:
+	if direction != Vector2.ZERO and on_attack:
 		velocity = direction * walk_speed
 		last_direction = direction
 		s_direction = direction
@@ -73,7 +79,8 @@ func process_animation(direction) -> void:
 	if velocity != Vector2.ZERO:
 		change_animation("walk", direction)
 	else:
-		change_animation("idle", direction)
+		if animation_movement:
+			change_animation("idle", direction)
 
 func change_animation(prefix: String, dir: Vector2) -> void:
 	if dir.x != 0:
@@ -94,5 +101,16 @@ func _Cooldown_Dash_Timeout() -> void:
 
 func _attack() -> void:
 	if Input.is_action_just_pressed("Attack"):
+		animation_movement = false
+		attack_timer.start()
+		attack_cooldown = false
+		on_attack = false
 		sprite.play("attack_right")
-	
+	else:
+		if attack_cooldown:
+			animation_movement = true
+
+
+func _attack_cooldown_end() -> void:
+	attack_cooldown = true
+	on_attack = true

@@ -503,6 +503,11 @@ sources/0 = SubResource("TileSetAtlasSource_r34rm")
 [node name="Player" parent="Charactor" unique_id=1616124246 instance=ExtResource("1_f6udf")]
 z_index = 10
 position = Vector2(516, 276)
+walk_speed = null
+sprint_speed = null
+dash_speed = null
+dash_cooldown = null
+health = null
 
 [node name="Map" type="Node2D" parent="." unique_id=2024508511]
 

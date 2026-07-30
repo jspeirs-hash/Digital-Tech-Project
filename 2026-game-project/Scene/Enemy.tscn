@@ -9,7 +9,8 @@ radius = 128.14055
 [sub_resource type="CircleShape2D" id="CircleShape2D_h0dic"]
 radius = 40.04997
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_8xwvg"]
+[sub_resource type="CircleShape2D" id="CircleShape2D_le5ry"]
+radius = 5.0990195
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_bi7p5"]
 atlas = ExtResource("2_h0dic")
@@ -537,10 +538,12 @@ animations = [{
 [sub_resource type="CircleShape2D" id="CircleShape2D_jy6qf"]
 radius = 5.0
 
-[node name="Enemy" type="CharacterBody2D" unique_id=1900824094 node_paths=PackedStringArray("enemy", "sprite")]
+[node name="Enemy" type="CharacterBody2D" unique_id=1900824094 node_paths=PackedStringArray("enemy", "sprite") groups=["enemy"]]
 collision_layer = 2
 collision_mask = 3
 motion_mode = 1
+platform_floor_layers = 4294967042
+platform_wall_layers = 2
 script = ExtResource("1_nc1xg")
 enemy = NodePath(".")
 sprite = NodePath("AnimatedSprite2D")
@@ -565,8 +568,8 @@ offset_right = 21.0
 offset_bottom = 21.0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=495222336]
-visible = false
-shape = SubResource("RectangleShape2D_8xwvg")
+position = Vector2(0, -4)
+shape = SubResource("CircleShape2D_le5ry")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=968133715]
 texture_filter = 1

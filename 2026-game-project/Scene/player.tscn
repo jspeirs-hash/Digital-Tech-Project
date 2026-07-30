@@ -425,10 +425,13 @@ _data = {
 &"Attack": SubResource("Animation_xa75v")
 }
 
-[sub_resource type="CircleShape2D" id="CircleShape2D_xa75v"]
-radius = 3.0
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_y8w33"]
+size = Vector2(13, 19)
 
-[node name="Player" type="CharacterBody2D" unique_id=1616124246 node_paths=PackedStringArray("pivot", "spawn_attack", "sprite") groups=["player"]]
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_xa75v"]
+size = Vector2(20, 23)
+
+[node name="Player" type="CharacterBody2D" unique_id=1616124246 node_paths=PackedStringArray("pivot", "spawn_attack", "sprite", "attack_timer") groups=["player"]]
 collision_layer = 3
 script = ExtResource("1_kelma")
 dash_duration = 0.08
@@ -436,6 +439,7 @@ pivot = NodePath(".")
 attack_scene = ExtResource("2_y8w33")
 spawn_attack = NodePath("Marker/Marker2D")
 sprite = NodePath("AnimatedSprite2D")
+attack_timer = NodePath("attack")
 
 [node name="Camera2D" type="Camera2D" parent="." unique_id=433131879]
 position = Vector2(1, -7)
@@ -478,7 +482,8 @@ position = Vector2(7, 8)
 texture_filter = 1
 position = Vector2(0, -7)
 sprite_frames = SubResource("SpriteFrames_c68nv")
-animation = &"idle_down"
+animation = &"attack_right"
+frame_progress = 0.4457771
 
 [node name="Ui" type="Node2D" parent="." unique_id=2029416239]
 position = Vector2(0, -7)
@@ -489,8 +494,18 @@ position = Vector2(0, -7)
 libraries/ = SubResource("AnimationLibrary_58ae2")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1576846424]
-position = Vector2(0, 7)
-shape = SubResource("CircleShape2D_xa75v")
+position = Vector2(0.5, 0.5)
+shape = SubResource("RectangleShape2D_y8w33")
+
+[node name="Area2D" type="Area2D" parent="." unique_id=59499744]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D" unique_id=1670111709]
+position = Vector2(0, 1.5)
+shape = SubResource("RectangleShape2D_xa75v")
+
+[node name="attack" type="Timer" parent="." unique_id=557336233]
+wait_time = 0.7
 
 [connection signal="timeout" from="Cooldown_dash" to="." method="_Cooldown_Dash_Timeout"]
 [connection signal="timeout" from="Duration_dash" to="." method="_Duration_Dash_Timeout"]
+[connection signal="timeout" from="attack" to="." method="_attack_cooldown_end"]
