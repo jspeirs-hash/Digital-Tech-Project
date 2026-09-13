@@ -15,6 +15,10 @@ run/main_scene="uid://8t6df5urdxlv"
 config/features=PackedStringArray("4.6", "Forward Plus")
 config/icon="res://icon.svg"
 
+[gui]
+
+theme/default_font_multichannel_signed_distance_field=true
+
 [input]
 
 ui_left={

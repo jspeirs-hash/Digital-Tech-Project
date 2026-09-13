@@ -1,7 +1,7 @@
 extends CharacterBody2D
 
 @export var speed: float = 70.0
-@export var health: float = 5.0
+@export var health: float = 2.0
 
 var player = null
 var chasing = false 
@@ -49,3 +49,11 @@ func player_out(body: Node2D) -> void:
 	var player = get_tree().get_first_node_in_group("player")
 	if player != null:
 		chasing = false
+		
+
+func _body_enter(body: Node2D) -> void:
+	pass
+
+func _on_get_hit_body_entered(body: Node2D) -> void:
+	if body.is_in_group("attack"):
+		print(health)

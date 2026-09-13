@@ -1,9 +1,16 @@
 [gd_scene format=3 uid="uid://bfbbqicktrnbg"]
 
+[ext_resource type="Script" uid="uid://hohjd32x1xpn" path="res://Scene/action_swing.gd" id="1_nmcvx"]
+
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_4l14j"]
-size = Vector2(41, 39)
+size = Vector2(26, 24)
 
 [node name="Swing" type="Area2D" unique_id=2096144966]
+collision_layer = 3
+script = ExtResource("1_nmcvx")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=725988067]
+position = Vector2(7, 3)
 shape = SubResource("RectangleShape2D_4l14j")
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]

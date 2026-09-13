@@ -3,15 +3,6 @@
 [ext_resource type="Script" uid="uid://cvj4kafitfe38" path="res://Scene/enemy.gd" id="1_nc1xg"]
 [ext_resource type="Texture2D" uid="uid://bub6awefw8b7v" path="res://mystic_woods_free_2.2/sprites/characters/slime.png" id="2_h0dic"]
 
-[sub_resource type="CircleShape2D" id="CircleShape2D_nc1xg"]
-radius = 128.14055
-
-[sub_resource type="CircleShape2D" id="CircleShape2D_h0dic"]
-radius = 40.04997
-
-[sub_resource type="CircleShape2D" id="CircleShape2D_le5ry"]
-radius = 5.0990195
-
 [sub_resource type="AtlasTexture" id="AtlasTexture_bi7p5"]
 atlas = ExtResource("2_h0dic")
 region = Rect2(0, 192, 32, 32)
@@ -535,54 +526,78 @@ animations = [{
 "speed": 5.0
 }]
 
+[sub_resource type="CircleShape2D" id="CircleShape2D_le5ry"]
+radius = 8.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_nc1xg"]
+radius = 128.14055
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_h0dic"]
+radius = 40.04997
+
 [sub_resource type="CircleShape2D" id="CircleShape2D_jy6qf"]
-radius = 5.0
+radius = 8.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_6frff"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_o55y1"]
+radius = 22.090721
 
 [node name="Enemy" type="CharacterBody2D" unique_id=1900824094 node_paths=PackedStringArray("enemy", "sprite") groups=["enemy"]]
-collision_layer = 2
-collision_mask = 3
+light_mask = 3
+visibility_layer = 3
 motion_mode = 1
-platform_floor_layers = 4294967042
-platform_wall_layers = 2
 script = ExtResource("1_nc1xg")
 enemy = NodePath(".")
 sprite = NodePath("AnimatedSprite2D")
-
-[node name="undetect" type="Area2D" parent="." unique_id=892511564]
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="undetect" unique_id=756549594]
-shape = SubResource("CircleShape2D_nc1xg")
-
-[node name="detect" type="Area2D" parent="." unique_id=371083951]
-collision_layer = 2
-collision_mask = 2
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="detect" unique_id=1825579267]
-shape = SubResource("CircleShape2D_h0dic")
-
-[node name="ColorRect" type="ColorRect" parent="." unique_id=346526613]
-visible = false
-offset_left = -19.0
-offset_top = -19.0
-offset_right = 21.0
-offset_bottom = 21.0
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=495222336]
-position = Vector2(0, -4)
-shape = SubResource("CircleShape2D_le5ry")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=968133715]
 texture_filter = 1
 sprite_frames = SubResource("SpriteFrames_kes7o")
 animation = &"idle_right"
-frame_progress = 0.46832487
+frame_progress = 0.29838127
 offset = Vector2(0, -6)
 
-[node name="hitbox" type="Area2D" parent="." unique_id=1937618960]
+[node name="body" type="CollisionShape2D" parent="." unique_id=495222336]
 position = Vector2(0, -4)
+shape = SubResource("CircleShape2D_le5ry")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="hitbox" unique_id=1447423983]
+[node name="something" type="Node2D" parent="." unique_id=1473319928]
+visible = false
+
+[node name="undetect" type="Area2D" parent="something" unique_id=892511564]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="something/undetect" unique_id=756549594]
+shape = SubResource("CircleShape2D_nc1xg")
+
+[node name="detect" type="Area2D" parent="something" unique_id=371083951]
+collision_layer = 2
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="something/detect" unique_id=1825579267]
+shape = SubResource("CircleShape2D_h0dic")
+
+[node name="Hitbox" type="Area2D" parent="something" unique_id=14638220]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="something/Hitbox" unique_id=1347780824]
+position = Vector2(0, -4)
 shape = SubResource("CircleShape2D_jy6qf")
 
-[connection signal="body_exited" from="undetect" to="." method="player_out"]
-[connection signal="body_entered" from="detect" to="." method="player_enter"]
+[node name="smart enemy" type="Node2D" parent="." unique_id=1042170323]
+visible = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=395852436]
+visible = false
+position = Vector2(0, -4)
+shape = SubResource("CircleShape2D_6frff")
+
+[node name="get hit" type="Area2D" parent="." unique_id=709278870]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="get hit" unique_id=2006203559]
+position = Vector2(0, -4)
+shape = SubResource("CircleShape2D_o55y1")
+
+[connection signal="body_exited" from="something/undetect" to="." method="player_out"]
+[connection signal="body_entered" from="something/detect" to="." method="player_enter"]
+[connection signal="body_entered" from="something/Hitbox" to="." method="_body_enter"]
+[connection signal="body_entered" from="get hit" to="." method="_on_get_hit_body_entered"]

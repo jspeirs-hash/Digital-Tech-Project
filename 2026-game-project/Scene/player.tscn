@@ -3,9 +3,11 @@
 [ext_resource type="Script" uid="uid://6loliwjns4ui" path="res://player.gd" id="1_kelma"]
 [ext_resource type="PackedScene" uid="uid://bfbbqicktrnbg" path="res://Scene/Action_Swing.tscn" id="2_y8w33"]
 [ext_resource type="Texture2D" uid="uid://drig5uofy461j" path="res://mystic_woods_free_2.2/sprites/characters/player.png" id="3_xa75v"]
+[ext_resource type="Script" uid="uid://0bfyjirguwdc" path="res://Scene/sword.gd" id="4_ivevv"]
+[ext_resource type="Texture2D" uid="uid://b7s0gkotf53fg" path="res://mystic_woods_free_2.2/Iicon_32_29.png" id="5_r6jsd"]
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_kelma"]
-size = Vector2(38, 38)
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_xa75v"]
+size = Vector2(20, 23)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_6xvy4"]
 atlas = ExtResource("3_xa75v")
@@ -417,31 +419,43 @@ animations = [{
 "speed": 5.0
 }]
 
-[sub_resource type="Animation" id="Animation_xa75v"]
-resource_name = "Attack"
-
-[sub_resource type="AnimationLibrary" id="AnimationLibrary_58ae2"]
-_data = {
-&"Attack": SubResource("Animation_xa75v")
-}
-
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_y8w33"]
-size = Vector2(13, 19)
+size = Vector2(15, 19)
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_xa75v"]
-size = Vector2(20, 23)
-
-[node name="Player" type="CharacterBody2D" unique_id=1616124246 node_paths=PackedStringArray("pivot", "spawn_attack", "sprite", "attack_timer") groups=["player"]]
+[node name="Player" type="CharacterBody2D" unique_id=1616124246 node_paths=PackedStringArray("pivot", "spawn_attack", "sprite", "cooldown_dash", "duration_dash", "delete_attack_timer", "attack_timer", "attack_cooldown_timer") groups=["player"]]
 collision_layer = 3
 script = ExtResource("1_kelma")
 dash_duration = 0.08
 pivot = NodePath(".")
 attack_scene = ExtResource("2_y8w33")
 spawn_attack = NodePath("Marker/Marker2D")
-sprite = NodePath("AnimatedSprite2D")
-attack_timer = NodePath("attack")
+sprite = NodePath("something/AnimatedSprite2D")
+cooldown_dash = NodePath("Cooldown_dash")
+duration_dash = NodePath("Duration_dash")
+delete_attack_timer = NodePath("Delete_attack")
+attack_timer = NodePath("something/attack_animation")
+attack_cooldown_timer = NodePath("attack_cooldown")
 
-[node name="Camera2D" type="Camera2D" parent="." unique_id=433131879]
+[node name="Marker" type="Node2D" parent="." unique_id=2108594504]
+position = Vector2(0, -7)
+
+[node name="Marker2D" type="Marker2D" parent="Marker" unique_id=1051960675]
+position = Vector2(7, 8)
+
+[node name="Ui" type="Node2D" parent="." unique_id=2029416239]
+position = Vector2(0, -7)
+
+[node name="CanvasLayer" type="CanvasLayer" parent="Ui" unique_id=597448941]
+
+[node name="hitbox" type="Area2D" parent="." unique_id=59499744]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="hitbox" unique_id=1670111709]
+position = Vector2(0, 1.5)
+shape = SubResource("RectangleShape2D_xa75v")
+
+[node name="something" type="Node2D" parent="." unique_id=243233244]
+
+[node name="Camera2D" type="Camera2D" parent="something" unique_id=433131879]
 position = Vector2(1, -7)
 zoom = Vector2(3.505, 3.505)
 position_smoothing_enabled = true
@@ -449,13 +463,26 @@ position_smoothing_speed = 10.0
 rotation_smoothing_enabled = true
 rotation_smoothing_speed = 10.0
 
-[node name="ColorRect" type="ColorRect" parent="." unique_id=1941502568]
+[node name="ColorRect" type="ColorRect" parent="something" unique_id=1941502568]
 visible = false
 offset_left = -19.0
 offset_top = -20.0
 offset_right = 21.0
 offset_bottom = 20.0
 metadata/_edit_use_anchors_ = true
+
+[node name="attack_animation" type="Timer" parent="something" unique_id=557336233]
+wait_time = 0.6
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="something" unique_id=999014557]
+texture_filter = 1
+position = Vector2(0, -7)
+sprite_frames = SubResource("SpriteFrames_c68nv")
+animation = &"idle_right"
+
+[node name="hitbox2" type="CollisionShape2D" parent="." unique_id=1576846424]
+position = Vector2(0.5, 0.5)
+shape = SubResource("RectangleShape2D_y8w33")
 
 [node name="Cooldown_dash" type="Timer" parent="." unique_id=1934258004 groups=["Dash"]]
 wait_time = 3.0
@@ -465,47 +492,24 @@ one_shot = true
 wait_time = 3.0
 one_shot = true
 
-[node name="Hitbox" type="Node2D" parent="." unique_id=370152410]
-position = Vector2(1, -7)
+[node name="attack_cooldown" type="Timer" parent="." unique_id=1013817199]
+wait_time = 0.6
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Hitbox" unique_id=1292680991]
-visible = false
-shape = SubResource("RectangleShape2D_kelma")
+[node name="weapon" type="Node2D" parent="." unique_id=629267577]
+script = ExtResource("4_ivevv")
 
-[node name="Marker" type="Node2D" parent="." unique_id=2108594504]
-position = Vector2(0, -7)
-
-[node name="Marker2D" type="Marker2D" parent="Marker" unique_id=1051960675]
-position = Vector2(7, 8)
-
-[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=999014557]
+[node name="Sprite2D" type="Sprite2D" parent="weapon" unique_id=1144410100]
 texture_filter = 1
-position = Vector2(0, -7)
-sprite_frames = SubResource("SpriteFrames_c68nv")
-animation = &"attack_right"
-frame_progress = 0.4457771
+position = Vector2(25, -19)
+texture = ExtResource("5_r6jsd")
 
-[node name="Ui" type="Node2D" parent="." unique_id=2029416239]
-position = Vector2(0, -7)
+[node name="Delete_attack" type="Timer" parent="." unique_id=776469867]
+wait_time = 0.6
 
-[node name="CanvasLayer" type="CanvasLayer" parent="Ui" unique_id=597448941]
-
-[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=2115800801]
-libraries/ = SubResource("AnimationLibrary_58ae2")
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1576846424]
-position = Vector2(0.5, 0.5)
-shape = SubResource("RectangleShape2D_y8w33")
-
-[node name="Area2D" type="Area2D" parent="." unique_id=59499744]
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D" unique_id=1670111709]
-position = Vector2(0, 1.5)
-shape = SubResource("RectangleShape2D_xa75v")
-
-[node name="attack" type="Timer" parent="." unique_id=557336233]
-wait_time = 0.7
-
+[connection signal="area_shape_entered" from="hitbox" to="." method="_on_hitbox_area_shape_entered"]
+[connection signal="body_entered" from="hitbox" to="." method="_on_hitbox_body_entered"]
+[connection signal="timeout" from="something/attack_animation" to="." method="_attack_animation_cooldown_end"]
 [connection signal="timeout" from="Cooldown_dash" to="." method="_Cooldown_Dash_Timeout"]
 [connection signal="timeout" from="Duration_dash" to="." method="_Duration_Dash_Timeout"]
-[connection signal="timeout" from="attack" to="." method="_attack_cooldown_end"]
+[connection signal="timeout" from="attack_cooldown" to="." method="_on_attack_cooldown_timeout"]
+[connection signal="timeout" from="Delete_attack" to="." method="_on_delete_attack_timeout"]

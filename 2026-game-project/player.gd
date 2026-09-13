@@ -16,17 +16,26 @@ var can_sprint: = false
 var idle = true
 var last_direction: Vector2 = Vector2.RIGHT
 var s_direction: Vector2 = Vector2.ZERO
-var attack = false
+var vec = Vector2.ZERO
 var animation_movement = true
-var attack_cooldown = false
-var on_attack = true
+var animation = false
+var enemy = CharacterBody2D
 
 #Spawner
 @export var pivot: CharacterBody2D
 @export var attack_scene: PackedScene
 @export var spawn_attack: Marker2D
 @export var sprite: AnimatedSprite2D
+@export var cooldown_dash: Timer
+@export var duration_dash: Timer
+@export var delete_attack_timer: Timer
+
+#attack
 @export var attack_timer: Timer
+@export var attack_cooldown_timer: Timer
+var on_attack = true
+var attacking = false
+var attack_cooldown = true
 
 func _ready() -> void:
 	pass
@@ -35,22 +44,22 @@ func _physics_process(delta: float) -> void:
 	process_movement()
 	move_and_slide()
 	_attack()
-	
+	attack_hitbox()
 	
 func process_movement() -> void:
 	var direction := Input.get_vector("Left", "Right", "Up", "Down")
 	
-	if direction != Vector2.ZERO and on_attack:
+	if direction != vec and on_attack:
 		velocity = direction * walk_speed
 		last_direction = direction
 		s_direction = direction
 	else:
-		velocity = Vector2.ZERO
+		velocity = vec
 	
 	process_animation(last_direction)
 	
 	#dashing mechanic
-	if Input.is_action_just_pressed("Dash") and can_dash and s_direction != Vector2.ZERO:
+	if Input.is_action_just_pressed("Dash") and can_dash and s_direction != vec:
 		is_dashing = true
 		can_dash = false
 		dash_direction = s_direction
@@ -74,9 +83,10 @@ func process_movement() -> void:
 		elif Input.is_action_just_released("Sprint"):
 			can_sprint = false
 			walk_speed = current_speed
+	
 
 func process_animation(direction) -> void:
-	if velocity != Vector2.ZERO:
+	if velocity != vec:
 		change_animation("walk", direction)
 	else:
 		if animation_movement:
@@ -93,24 +103,51 @@ func change_animation(prefix: String, dir: Vector2) -> void:
 	
 func _Duration_Dash_Timeout() -> void:
 	is_dashing = false
-	print("Duration")
 
 func _Cooldown_Dash_Timeout() -> void:
 	can_dash = true
-	print("Cooldown")
 
 func _attack() -> void:
 	if Input.is_action_just_pressed("Attack"):
 		animation_movement = false
 		attack_timer.start()
-		attack_cooldown = false
-		on_attack = false
-		sprite.play("attack_right")
-	else:
 		if attack_cooldown:
-			animation_movement = true
+			sprite.play("attack_right")
+			on_attack = false
+			attacking = true
 
-
-func _attack_cooldown_end() -> void:
-	attack_cooldown = true
+func _attack_animation_cooldown_end() -> void:
+	animation_movement = true
 	on_attack = true
+	
+func attack_hitbox() -> void:
+	if attacking:
+		attacking = false
+		if attack_cooldown:
+			var attack = attack_scene.instantiate()
+			add_child(attack)
+			attack_cooldown = false
+			attack_cooldown_timer.start()
+			delete_attack_timer.start()
+			await delete_attack_timer.timeout
+			attack.tree_exited
+
+func _on_attack_cooldown_timeout() -> void:
+	attack_cooldown = true
+
+
+func _on_hitbox_body_entered(body: Node2D) -> void:
+	var enemy = get_tree().get_first_node_in_group("enemy")
+	body = enemy
+	if body.is_in_group("enemy"):
+		damage_player()
+		if health == 0:
+			queue_free()
+
+func damage_player() -> void:
+	health -= 1
+	print(health)
+
+
+func _on_delete_attack_timeout() -> void:
+	pass
