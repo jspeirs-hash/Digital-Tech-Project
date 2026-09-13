@@ -11,15 +11,15 @@ var last_direction: Vector2 = Vector2.RIGHT
 @export var sprite: AnimatedSprite2D
 
 func _ready() -> void:
-	get_node.call_deferred(is_in_group("player"))
+	player = get_tree().get_first_node_in_group("player")
 
 func _physics_process(delta: float) -> void:
 	_chasing()
 
 func _chasing() -> void:
-	var player = get_tree().get_first_node_in_group("player")
+	player = get_tree().get_first_node_in_group("player")
 	velocity = Vector2.ZERO
-	if chasing:
+	if chasing and player != null:
 		velocity = position.direction_to(player.position) * speed
 		sprite.play("walk_right")
 		if (player.position.x - position.x) < 0:
@@ -56,4 +56,11 @@ func _body_enter(body: Node2D) -> void:
 
 func _on_get_hit_body_entered(body: Node2D) -> void:
 	if body.is_in_group("attack"):
-		print(health)
+		take_damage()
+
+
+func take_damage(amount: float = 1.0) -> void:
+	health -= amount
+	print(health)
+	if health <= 0:
+		queue_free()

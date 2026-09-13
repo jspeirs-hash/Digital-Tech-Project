@@ -49,7 +49,7 @@ func _physics_process(delta: float) -> void:
 func process_movement() -> void:
 	var direction := Input.get_vector("Left", "Right", "Up", "Down")
 	
-	if direction != vec and on_attack:
+	if direction != vec:
 		velocity = direction * walk_speed
 		last_direction = direction
 		s_direction = direction
@@ -86,6 +86,9 @@ func process_movement() -> void:
 	
 
 func process_animation(direction) -> void:
+	if not animation_movement:
+		return
+
 	if velocity != vec:
 		change_animation("walk", direction)
 	else:
@@ -108,41 +111,51 @@ func _Cooldown_Dash_Timeout() -> void:
 	can_dash = true
 
 func _attack() -> void:
-	if Input.is_action_just_pressed("Attack"):
+	if Input.is_action_just_pressed("Attack") and attack_cooldown:
 		animation_movement = false
 		attack_timer.start()
-		if attack_cooldown:
-			sprite.play("attack_right")
-			on_attack = false
-			attacking = true
+		attack_cooldown = false
+		attack_cooldown_timer.start()
+		play_attack_animation()
+		on_attack = false
+		attacking = true
 
 func _attack_animation_cooldown_end() -> void:
 	animation_movement = true
 	on_attack = true
-	
+
+
+func play_attack_animation() -> void:
+	if abs(last_direction.x) >= abs(last_direction.y):
+		sprite.flip_h = last_direction.x < 0
+		sprite.play("attack_right")
+	elif last_direction.y < 0:
+		sprite.play("attack_up")
+	else:
+		sprite.play("attack_down")
+
 func attack_hitbox() -> void:
 	if attacking:
 		attacking = false
-		if attack_cooldown:
-			var attack = attack_scene.instantiate()
-			add_child(attack)
-			attack_cooldown = false
-			attack_cooldown_timer.start()
-			delete_attack_timer.start()
-			await delete_attack_timer.timeout
-			attack.tree_exited
+		var attack = attack_scene.instantiate()
+		add_child(attack)
+		attack.global_position = spawn_attack.global_position + last_direction * 16.0
+		attack.rotation = last_direction.angle()
+		delete_attack_timer.start()
+		await delete_attack_timer.timeout
+		if is_instance_valid(attack):
+			attack.queue_free()
 
 func _on_attack_cooldown_timeout() -> void:
 	attack_cooldown = true
 
 
 func _on_hitbox_body_entered(body: Node2D) -> void:
-	var enemy = get_tree().get_first_node_in_group("enemy")
-	body = enemy
 	if body.is_in_group("enemy"):
 		damage_player()
-		if health == 0:
+		if health <= 0:
 			queue_free()
+
 
 func damage_player() -> void:
 	health -= 1

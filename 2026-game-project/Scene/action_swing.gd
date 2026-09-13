@@ -1,8 +1,8 @@
 extends Area2D
-var health = 1
+
+@export var damage: float = 1.0
 
 
 func _on_body_entered(body: Node2D) -> void:
-	var enemy = get_tree().get_first_node_in_group("enemy")
-	if body == enemy:
-		pass
+	if body.is_in_group("enemy") and body.has_method("take_damage"):
+		body.call("take_damage", damage)

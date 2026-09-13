@@ -440,7 +440,7 @@ attack_cooldown_timer = NodePath("attack_cooldown")
 position = Vector2(0, -7)
 
 [node name="Marker2D" type="Marker2D" parent="Marker" unique_id=1051960675]
-position = Vector2(7, 8)
+position = Vector2(0, 8)
 
 [node name="Ui" type="Node2D" parent="." unique_id=2029416239]
 position = Vector2(0, -7)
@@ -478,7 +478,7 @@ wait_time = 0.6
 texture_filter = 1
 position = Vector2(0, -7)
 sprite_frames = SubResource("SpriteFrames_c68nv")
-animation = &"idle_right"
+animation = &"attack_down"
 
 [node name="hitbox2" type="CollisionShape2D" parent="." unique_id=1576846424]
 position = Vector2(0.5, 0.5)
@@ -496,6 +496,7 @@ one_shot = true
 wait_time = 0.6
 
 [node name="weapon" type="Node2D" parent="." unique_id=629267577]
+visible = false
 script = ExtResource("4_ivevv")
 
 [node name="Sprite2D" type="Sprite2D" parent="weapon" unique_id=1144410100]
@@ -506,7 +507,6 @@ texture = ExtResource("5_r6jsd")
 [node name="Delete_attack" type="Timer" parent="." unique_id=776469867]
 wait_time = 0.6
 
-[connection signal="area_shape_entered" from="hitbox" to="." method="_on_hitbox_area_shape_entered"]
 [connection signal="body_entered" from="hitbox" to="." method="_on_hitbox_body_entered"]
 [connection signal="timeout" from="something/attack_animation" to="." method="_attack_animation_cooldown_end"]
 [connection signal="timeout" from="Cooldown_dash" to="." method="_Cooldown_Dash_Timeout"]

@@ -1,5 +1,7 @@
 [gd_scene format=3 uid="uid://ldi8gqih6em0"]
 
+[ext_resource type="Script" path="res://Scene/menu.gd" id="1_menu"]
+
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_gg8xt"]
 border_width_left = 1
 border_width_top = 1
@@ -11,6 +13,7 @@ corner_radius_bottom_right = 5
 corner_radius_bottom_left = 5
 
 [node name="Control" type="CanvasLayer" unique_id=879505992]
+script = ExtResource("1_menu")
 
 [node name="Control" type="Control" parent="." unique_id=1730114537]
 layout_mode = 3
@@ -37,17 +40,35 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -20.0
-offset_top = -20.0
-offset_right = 20.0
-offset_bottom = 20.0
+offset_left = -190.0
+offset_top = -100.0
+offset_right = 190.0
+offset_bottom = 100.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_gg8xt")
 
-[node name="VBoxContainer" type="VBoxContainer" parent="Control/PanelContainer" unique_id=1152495784]
+[node name="MarginContainer" type="MarginContainer" parent="Control/PanelContainer" unique_id=2084206658]
 layout_mode = 2
+theme_override_constants/margin_left = 48
+theme_override_constants/margin_top = 36
+theme_override_constants/margin_right = 48
+theme_override_constants/margin_bottom = 36
 
-[node name="Label" type="Label" parent="Control/PanelContainer/VBoxContainer" unique_id=1249714787]
+[node name="VBoxContainer" type="VBoxContainer" parent="Control/PanelContainer/MarginContainer" unique_id=1152495784]
 layout_mode = 2
-text = "Hello world"
+theme_override_constants/separation = 24
+
+[node name="Title" type="Label" parent="Control/PanelContainer/MarginContainer/VBoxContainer" unique_id=1249714787]
+layout_mode = 2
+theme_override_font_sizes/font_size = 36
+text = "The Chosen One"
+horizontal_alignment = 1
+
+[node name="PlayButton" type="Button" parent="Control/PanelContainer/MarginContainer/VBoxContainer" unique_id=1193150556]
+custom_minimum_size = Vector2(220, 56)
+layout_mode = 2
+theme_override_font_sizes/font_size = 22
+text = "Play"
+
+[connection signal="pressed" from="Control/PanelContainer/MarginContainer/VBoxContainer/PlayButton" to="." method="_on_play_button_pressed"]
