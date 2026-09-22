@@ -1,11 +1,12 @@
 [gd_scene format=4 uid="uid://8t6df5urdxlv"]
 
 [ext_resource type="PackedScene" uid="uid://brrfwon1vtmt2" path="res://Scene/player.tscn" id="1_f6udf"]
-[ext_resource type="PackedScene" uid="uid://06ugiolofi31" path="res://skill1.tscn" id="2_1xcnr"]
+[ext_resource type="PackedScene" uid="uid://06ugiolofi31" path="res://Scene/skill1.tscn" id="2_1xcnr"]
 [ext_resource type="Texture2D" uid="uid://d1qa3cmytlgx1" path="res://2D map/kenney_tiny-dungeon/Tilemap/tilemap_packed.png" id="2_r34rm"]
+[ext_resource type="PackedScene" uid="uid://b32rnn8nko2ec" path="res://Scene/skill2.tscn" id="2_skill2"]
 [ext_resource type="Texture2D" uid="uid://dogcker5fjre6" path="res://2D map/kenney_tiny-town/Tilemap/tilemap_packed.png" id="3_2wwxx"]
 [ext_resource type="PackedScene" uid="uid://dscu18d40auin" path="res://Scene/Enemy.tscn" id="4_2wwxx"]
-[ext_resource type="Script" uid="uid://cobj3froo8qra" path="res://Scene/main.gd" id="5_main"]
+[ext_resource type="Script" uid="uid://cobj3froo8qra" path="res://Script/main.gd" id="5_main"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_3amdw"]
 texture = ExtResource("2_r34rm")
@@ -498,11 +499,13 @@ texture = ExtResource("3_2wwxx")
 [sub_resource type="TileSet" id="TileSet_2wwxx"]
 sources/0 = SubResource("TileSetAtlasSource_r34rm")
 
-[node name="Main" type="Node2D" unique_id=670405543 node_paths=PackedStringArray("skillone", "skilltwo")]
+[node name="Main" type="Node2D" unique_id=670405543 node_paths=PackedStringArray("skillone", "skilltwo", "player")]
 script = ExtResource("5_main")
 skillone = NodePath("HUD/SkillBar/Buttons/Skill1")
 skilltwo = NodePath("HUD/SkillBar/Buttons/Skill2")
 scene_skillone = ExtResource("2_1xcnr")
+scene_skilltwo = ExtResource("2_skill2")
+player = NodePath("Charactor/Player")
 
 [node name="Charactor" type="Node2D" parent="." unique_id=1127854383]
 
@@ -573,3 +576,4 @@ text = "Skill 2
 position = Vector2(375, 304)
 
 [connection signal="pressed" from="HUD/SkillBar/Buttons/Skill1" to="." method="_on_skill_1_pressed"]
+[connection signal="pressed" from="HUD/SkillBar/Buttons/Skill2" to="." method="_on_skill_2_pressed"]

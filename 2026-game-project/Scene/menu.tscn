@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://ldi8gqih6em0"]
 
-[ext_resource type="Script" path="res://Scene/menu.gd" id="1_menu"]
+[ext_resource type="Script" uid="uid://djw4rblpl0b2r" path="res://Script/menu.gd" id="1_menu"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_gg8xt"]
 border_width_left = 1

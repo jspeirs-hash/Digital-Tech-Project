@@ -1,9 +1,9 @@
 [gd_scene format=3 uid="uid://brrfwon1vtmt2"]
 
-[ext_resource type="Script" uid="uid://6loliwjns4ui" path="res://player.gd" id="1_kelma"]
+[ext_resource type="Script" uid="uid://6loliwjns4ui" path="res://Script/player.gd" id="1_kelma"]
 [ext_resource type="PackedScene" uid="uid://bfbbqicktrnbg" path="res://Scene/Action_Swing.tscn" id="2_y8w33"]
 [ext_resource type="Texture2D" uid="uid://drig5uofy461j" path="res://mystic_woods_free_2.2/sprites/characters/player.png" id="3_xa75v"]
-[ext_resource type="Script" uid="uid://0bfyjirguwdc" path="res://Scene/sword.gd" id="4_ivevv"]
+[ext_resource type="Script" uid="uid://0bfyjirguwdc" path="res://Script/sword.gd" id="4_ivevv"]
 [ext_resource type="Texture2D" uid="uid://b7s0gkotf53fg" path="res://mystic_woods_free_2.2/Iicon_32_29.png" id="5_r6jsd"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_xa75v"]

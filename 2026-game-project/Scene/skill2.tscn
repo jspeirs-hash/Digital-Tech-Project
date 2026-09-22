@@ -1,0 +1,61 @@
+[gd_scene format=3 uid="uid://b32rnn8nko2ec"]
+
+[ext_resource type="Script" uid="uid://cx5ucj7ffdhna" path="res://Script/skill_hit.gd" id="1_skillhit"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_skill2"]
+size = Vector2(100, 46)
+
+[sub_resource type="Gradient" id="Gradient_slash"]
+offsets = PackedFloat32Array(0, 0.4, 1)
+colors = PackedColorArray(1, 0.95, 0.6, 1, 1, 0.55, 0.1, 1, 0.6, 0.1, 0, 0)
+
+[sub_resource type="Gradient" id="Gradient_sparks"]
+colors = PackedColorArray(1, 1, 0.8, 1, 1, 0.4, 0.1, 0)
+
+[node name="Area2D" type="Area2D" unique_id=781043387]
+script = ExtResource("1_skillhit")
+damage = 3.0
+lifetime = 0.4
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1256546544]
+position = Vector2(40, 0)
+shape = SubResource("RectangleShape2D_skill2")
+
+[node name="Slash" type="CPUParticles2D" parent="." unique_id=424666804]
+emitting = true
+amount = 60
+lifetime = 0.3
+one_shot = true
+explosiveness = 0.85
+randomness = 0.3
+emission_shape = 3
+emission_rect_extents = Vector2(10, 24)
+spread = 12.0
+gravity = Vector2(0, 0)
+initial_velocity_min = 320.0
+initial_velocity_max = 420.0
+damping_min = 40.0
+damping_max = 40.0
+scale_amount_min = 4.0
+scale_amount_max = 8.0
+color_ramp = SubResource("Gradient_slash")
+
+[node name="Sparks" type="CPUParticles2D" parent="." unique_id=457704170]
+position = Vector2(70, 0)
+emitting = true
+amount = 45
+lifetime = 0.35
+one_shot = true
+explosiveness = 1.0
+randomness = 0.6
+emission_shape = 1
+emission_sphere_radius = 8.0
+spread = 70.0
+gravity = Vector2(0, 0)
+initial_velocity_min = 90.0
+initial_velocity_max = 220.0
+angular_velocity_min = -200.0
+angular_velocity_max = 200.0
+scale_amount_min = 2.0
+scale_amount_max = 4.0
+color_ramp = SubResource("Gradient_sparks")
