@@ -584,7 +584,6 @@ position = Vector2(0, -4)
 shape = SubResource("CircleShape2D_jy6qf")
 
 [node name="smart enemy" type="Node2D" parent="." unique_id=1042170323]
-visible = false
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=395852436]
 visible = false
