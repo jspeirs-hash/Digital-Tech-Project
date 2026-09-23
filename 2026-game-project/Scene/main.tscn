@@ -499,6 +499,8 @@ texture = ExtResource("3_2wwxx")
 [sub_resource type="TileSet" id="TileSet_2wwxx"]
 sources/0 = SubResource("TileSetAtlasSource_r34rm")
 
+[sub_resource type="Curve2D" id="Curve2D_ow1sv"]
+
 [node name="Main" type="Node2D" unique_id=670405543 node_paths=PackedStringArray("skillone", "skilltwo", "player")]
 script = ExtResource("5_main")
 skillone = NodePath("HUD/SkillBar/Buttons/Skill1")
@@ -571,9 +573,6 @@ text = "Skill 2
 [node name="Node2D3" type="Node2D" parent="." unique_id=1079594301]
 
 [node name="world-environment" type="Node2D" parent="." unique_id=979030444]
-
-[node name="Enemy" parent="." unique_id=1900824094 instance=ExtResource("4_2wwxx")]
-position = Vector2(375, 304)
 
 [connection signal="pressed" from="HUD/SkillBar/Buttons/Skill1" to="." method="_on_skill_1_pressed"]
 [connection signal="pressed" from="HUD/SkillBar/Buttons/Skill2" to="." method="_on_skill_2_pressed"]

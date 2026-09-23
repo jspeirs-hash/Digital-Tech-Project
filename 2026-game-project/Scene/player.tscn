@@ -5,6 +5,8 @@
 [ext_resource type="Texture2D" uid="uid://drig5uofy461j" path="res://mystic_woods_free_2.2/sprites/characters/player.png" id="3_xa75v"]
 [ext_resource type="Script" uid="uid://0bfyjirguwdc" path="res://Script/sword.gd" id="4_ivevv"]
 [ext_resource type="Texture2D" uid="uid://b7s0gkotf53fg" path="res://mystic_woods_free_2.2/Iicon_32_29.png" id="5_r6jsd"]
+[ext_resource type="Script" path="res://Script/spawner.gd" id="6_spawner"]
+[ext_resource type="PackedScene" uid="uid://dscu18d40auin" path="res://Scene/Enemy.tscn" id="7_enemy"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_xa75v"]
 size = Vector2(20, 23)
@@ -422,6 +424,12 @@ animations = [{
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_y8w33"]
 size = Vector2(15, 19)
 
+[sub_resource type="Curve2D" id="Curve2D_ivevv"]
+_data = {
+"points": PackedVector2Array(0, 0, 0, 0, -213, -153, 0, 0, 0, 0, 243, -154, 0, 0, 0, 0, 253, 122, 0, 0, 0, 0, -222, 116, 0, 0, 0, 0, -233, -147)
+}
+point_count = 5
+
 [node name="Player" type="CharacterBody2D" unique_id=1616124246 node_paths=PackedStringArray("pivot", "spawn_attack", "sprite", "cooldown_dash", "duration_dash", "delete_attack_timer", "attack_timer", "attack_cooldown_timer") groups=["player"]]
 collision_layer = 3
 script = ExtResource("1_kelma")
@@ -506,6 +514,16 @@ texture = ExtResource("5_r6jsd")
 
 [node name="Delete_attack" type="Timer" parent="." unique_id=776469867]
 wait_time = 0.6
+
+[node name="Path2D" type="Path2D" parent="." unique_id=796971913]
+curve = SubResource("Curve2D_ivevv")
+script = ExtResource("6_spawner")
+enemy_scene = ExtResource("7_enemy")
+spawn_time = 1.0
+
+[node name="PathFollow2D" type="PathFollow2D" parent="Path2D" unique_id=1642478306]
+position = Vector2(-213, -153)
+rotation = -0.0021929787
 
 [connection signal="body_entered" from="hitbox" to="." method="_on_hitbox_body_entered"]
 [connection signal="timeout" from="something/attack_animation" to="." method="_attack_animation_cooldown_end"]

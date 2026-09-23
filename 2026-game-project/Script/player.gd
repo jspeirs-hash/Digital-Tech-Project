@@ -21,6 +21,10 @@ var animation_movement = true
 var animation = false
 var enemy = CharacterBody2D
 
+#knockback
+var knockback: Vector2 = Vector2.ZERO
+var knockback_timer: float = 0.0
+
 #Spawner
 @export var pivot: CharacterBody2D
 @export var attack_scene: PackedScene
@@ -41,10 +45,20 @@ func _ready() -> void:
 	pass
 
 func _physics_process(delta: float) -> void:
-	process_movement()
+	if knockback_timer > 0.0:
+		velocity = knockback
+		knockback_timer -= delta
+		if knockback_timer <= 0.0:
+			knockback = Vector2.ZERO
+	else:
+		process_movement()
 	move_and_slide()
 	_attack()
 	attack_hitbox()
+
+func apply_knockback(dir: Vector2, force: float) -> void:
+	knockback = dir.normalized() * force
+	knockback_timer = 0.2
 	
 func process_movement() -> void:
 	var direction := Input.get_vector("Left", "Right", "Up", "Down")

@@ -596,7 +596,4 @@ shape = SubResource("CircleShape2D_6frff")
 position = Vector2(0, -4)
 shape = SubResource("CircleShape2D_o55y1")
 
-[connection signal="body_exited" from="something/undetect" to="." method="player_out"]
-[connection signal="body_entered" from="something/detect" to="." method="player_enter"]
-[connection signal="body_entered" from="something/Hitbox" to="." method="_body_enter"]
 [connection signal="body_entered" from="get hit" to="." method="_on_get_hit_body_entered"]
