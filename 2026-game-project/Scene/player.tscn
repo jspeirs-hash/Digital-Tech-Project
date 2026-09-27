@@ -433,10 +433,11 @@ _data = {
 }
 point_count = 5
 
-[node name="Player" type="CharacterBody2D" unique_id=1616124246 node_paths=PackedStringArray("pivot", "spawn_attack", "sprite", "cooldown_dash", "duration_dash", "delete_attack_timer", "dirt_trail", "attack_timer", "attack_cooldown_timer") groups=["player"]]
+[node name="Player" type="CharacterBody2D" unique_id=1616124246 node_paths=PackedStringArray("camera", "pivot", "spawn_attack", "sprite", "cooldown_dash", "duration_dash", "delete_attack_timer", "dirt_trail", "attack_timer", "attack_cooldown_timer") groups=["player"]]
 collision_layer = 3
 script = ExtResource("1_kelma")
 dash_duration = 0.08
+camera = NodePath("something/Camera2D")
 pivot = NodePath(".")
 attack_scene = ExtResource("2_y8w33")
 spawn_attack = NodePath("Marker/Marker2D")
@@ -533,10 +534,11 @@ texture = ExtResource("5_r6jsd")
 [node name="Delete_attack" type="Timer" parent="." unique_id=776469867]
 wait_time = 0.6
 
-[node name="Path2D" type="Path2D" parent="." unique_id=796971913]
+[node name="Path2D" type="Path2D" parent="." unique_id=796971913 node_paths=PackedStringArray("follow")]
 curve = SubResource("Curve2D_ivevv")
 script = ExtResource("6_spawner")
 enemy_scene = ExtResource("7_enemy")
+follow = NodePath("PathFollow2D")
 
 [node name="PathFollow2D" type="PathFollow2D" parent="Path2D" unique_id=1642478306]
 position = Vector2(-213, -153)

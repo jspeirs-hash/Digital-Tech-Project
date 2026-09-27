@@ -1,29 +1,29 @@
-[gd_scene format=3 uid="uid://ldi8gqih6em0"]
+[gd_scene format=3 uid="uid://bx84as6jnenxs"]
 
-[ext_resource type="Script" uid="uid://djw4rblpl0b2r" path="res://Script/menu.gd" id="1_menu"]
+[ext_resource type="Script" uid="uid://c3tmmxsp2gpny" path="res://Script/death.gd" id="1_death"]
 [ext_resource type="Theme" uid="uid://drdykgjlmk2ry" path="res://Assets/UI/ui_theme.tres" id="2_theme"]
 [ext_resource type="Texture2D" uid="uid://h5mlinkhwg4" path="res://Assets/UI/menu_background.png" id="3_bg"]
 [ext_resource type="Texture2D" uid="uid://drig5uofy461j" path="res://mystic_woods_free_2.2/sprites/characters/player.png" id="4_player"]
 [ext_resource type="Texture2D" uid="uid://bub6awefw8b7v" path="res://mystic_woods_free_2.2/sprites/characters/slime.png" id="5_slime"]
-[ext_resource type="AudioStream" uid="uid://bpe4qyfurk2bi" path="res://Assets/Music/town.mp3" id="6_music"]
+[ext_resource type="AudioStream" uid="uid://duq603g0gub6g" path="res://Assets/Music/night_skipping.mp3" id="6_music"]
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_player"]
+[sub_resource type="AtlasTexture" id="AtlasTexture_dead_player"]
 atlas = ExtResource("4_player")
-region = Rect2(0, 48, 48, 48)
+region = Rect2(96, 432, 48, 48)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_slime"]
 atlas = ExtResource("5_slime")
 region = Rect2(0, 32, 32, 32)
 
-[node name="Control" type="CanvasLayer" unique_id=524857446]
-script = ExtResource("1_menu")
+[node name="Death" type="CanvasLayer" unique_id=781441478]
+script = ExtResource("1_death")
 
-[node name="Music" type="AudioStreamPlayer" parent="."]
+[node name="Music" type="AudioStreamPlayer" parent="." unique_id=1026057716]
 stream = ExtResource("6_music")
-volume_db = -8.0
+volume_db = -30.82
 autoplay = true
 
-[node name="Control" type="Control" parent="." unique_id=176814387]
+[node name="Control" type="Control" parent="." unique_id=1646490856]
 texture_filter = 1
 layout_mode = 3
 anchors_preset = 15
@@ -33,7 +33,7 @@ grow_horizontal = 2
 grow_vertical = 2
 theme = ExtResource("2_theme")
 
-[node name="Background" type="TextureRect" parent="Control" unique_id=291282772]
+[node name="Background" type="TextureRect" parent="Control" unique_id=443798032]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -44,7 +44,7 @@ texture = ExtResource("3_bg")
 expand_mode = 1
 stretch_mode = 1
 
-[node name="Shade" type="ColorRect" parent="Control" unique_id=637361312]
+[node name="RedShade" type="ColorRect" parent="Control" unique_id=576994887]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -52,9 +52,9 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
-color = Color(0.1, 0.05, 0.08, 0.3)
+color = Color(0.18, 0.01, 0.04, 0.8)
 
-[node name="Player" type="TextureRect" parent="Control" unique_id=2006025555]
+[node name="DeadPlayer" type="TextureRect" parent="Control" unique_id=940690753]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -62,16 +62,16 @@ anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
 offset_left = -460.0
-offset_top = -150.0
+offset_top = -110.0
 offset_right = -220.0
-offset_bottom = 90.0
+offset_bottom = 130.0
 grow_horizontal = 2
 grow_vertical = 2
-texture = SubResource("AtlasTexture_player")
+texture = SubResource("AtlasTexture_dead_player")
 expand_mode = 1
 stretch_mode = 5
 
-[node name="Slime" type="TextureRect" parent="Control" unique_id=542727570]
+[node name="Slime" type="TextureRect" parent="Control" unique_id=1368372454]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -89,7 +89,7 @@ expand_mode = 1
 stretch_mode = 5
 flip_h = true
 
-[node name="Content" type="VBoxContainer" parent="Control" unique_id=1196940805]
+[node name="Content" type="VBoxContainer" parent="Control" unique_id=1262604395]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -105,29 +105,30 @@ grow_vertical = 2
 theme_override_constants/separation = 28
 alignment = 1
 
-[node name="Title" type="Label" parent="Control/Content" unique_id=1221250284]
+[node name="Title" type="Label" parent="Control/Content" unique_id=653335310]
 layout_mode = 2
-theme_override_font_sizes/font_size = 56
-text = "The Chosen One"
+theme_override_colors/font_color = Color(0.95, 0.3, 0.3, 1)
+theme_override_font_sizes/font_size = 64
+text = "You Died"
 horizontal_alignment = 1
 
-[node name="Panel" type="PanelContainer" parent="Control/Content" unique_id=1946975593]
+[node name="Panel" type="PanelContainer" parent="Control/Content" unique_id=1806495104]
 layout_mode = 2
 size_flags_horizontal = 4
 
-[node name="Buttons" type="VBoxContainer" parent="Control/Content/Panel" unique_id=1878702697]
+[node name="Buttons" type="VBoxContainer" parent="Control/Content/Panel" unique_id=2051234325]
 layout_mode = 2
 theme_override_constants/separation = 16
 
-[node name="PlayButton" type="Button" parent="Control/Content/Panel/Buttons" unique_id=1607079148]
+[node name="RetryButton" type="Button" parent="Control/Content/Panel/Buttons" unique_id=1301991741]
 custom_minimum_size = Vector2(240, 64)
 layout_mode = 2
-text = "Play"
+text = "Retry"
 
-[node name="QuitButton" type="Button" parent="Control/Content/Panel/Buttons" unique_id=1121401886]
+[node name="MenuButton" type="Button" parent="Control/Content/Panel/Buttons" unique_id=1669735442]
 custom_minimum_size = Vector2(240, 64)
 layout_mode = 2
-text = "Quit"
+text = "Menu"
 
-[connection signal="pressed" from="Control/Content/Panel/Buttons/PlayButton" to="." method="_on_play_button_pressed"]
-[connection signal="pressed" from="Control/Content/Panel/Buttons/QuitButton" to="." method="_on_quit_button_pressed"]
+[connection signal="pressed" from="Control/Content/Panel/Buttons/RetryButton" to="." method="_on_retry_button_pressed"]
+[connection signal="pressed" from="Control/Content/Panel/Buttons/MenuButton" to="." method="_on_menu_button_pressed"]

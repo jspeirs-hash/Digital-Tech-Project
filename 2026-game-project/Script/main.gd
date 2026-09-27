@@ -1,6 +1,6 @@
 extends Node2D
 
-@onready var terrain_layer: TileMapLayer = $Map/Main
+@export var terrain_layer: TileMapLayer
 @export var skillone: Button
 @export var skilltwo: Button
 @export var scene_skillone: PackedScene
@@ -20,6 +20,12 @@ func _ready() -> void:
 			dirt_cells.append(cell)
 	if not dirt_cells.is_empty():
 		terrain_layer.set_cells_terrain_connect(dirt_cells, 0, 1)
+
+	var map_rect = terrain_layer.get_used_rect()
+	var tile_size = terrain_layer.tile_set.tile_size
+	var top_left = Vector2(map_rect.position * tile_size)
+	var bottom_right = Vector2(map_rect.end * tile_size)
+	player.set_map_limits(top_left, bottom_right)
 
 func _process(delta: float) -> void:
 	use_skill()

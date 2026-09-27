@@ -3,8 +3,9 @@ extends Path2D
 @export var enemy_scene: PackedScene
 @export var spawn_time: float = 1.0
 @export var enemies_per_wave: int = 3
-@export var wave_growth: int = 1
+@export var wave_growth: int = 3
 @export var time_between_waves: float = 3.0
+@export var follow: PathFollow2D
 
 var timer: float = 0.0
 var wave_timer: float = 0.0
@@ -38,7 +39,6 @@ func spawn_enemy() -> void:
 	if curve == null or curve.point_count < 2:
 		return
 
-	var follow = $PathFollow2D
 	follow.progress_ratio = randf_range(0.0, 1.0)
 
 	var enemy = enemy_scene.instantiate()

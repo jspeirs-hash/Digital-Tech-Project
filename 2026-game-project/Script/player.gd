@@ -7,6 +7,7 @@ extends CharacterBody2D
 @export var dash_duration: float = 3.0
 @export var dash_cooldown: float = 3.0
 @export var health: float = 5.0
+@export var camera: Camera2D
 
 var current_speed = walk_speed
 var dash_direction: Vector2 = Vector2.ZERO
@@ -24,6 +25,11 @@ var enemy = CharacterBody2D
 #knockback
 var knockback: Vector2 = Vector2.ZERO
 var knockback_timer: float = 0.0
+
+#map edges
+@export var edge_margin: float = 8.0
+var map_top_left: Vector2 = Vector2(-100000, -100000)
+var map_bottom_right: Vector2 = Vector2(100000, 100000)
 
 #Spawner
 @export var pivot: CharacterBody2D
@@ -54,12 +60,23 @@ func _physics_process(delta: float) -> void:
 	else:
 		process_movement()
 	move_and_slide()
+	global_position.x = clamp(global_position.x, map_top_left.x + edge_margin, map_bottom_right.x - edge_margin)
+	global_position.y = clamp(global_position.y, map_top_left.y + edge_margin, map_bottom_right.y - edge_margin)
 	_attack()
 	attack_hitbox()
 
 func apply_knockback(dir: Vector2, force: float) -> void:
 	knockback = dir.normalized() * force
 	knockback_timer = 0.2
+
+func set_map_limits(top_left: Vector2, bottom_right: Vector2) -> void:
+	map_top_left = top_left
+	map_bottom_right = bottom_right
+
+	camera.limit_left = int(top_left.x)
+	camera.limit_top = int(top_left.y)
+	camera.limit_right = int(bottom_right.x)
+	camera.limit_bottom = int(bottom_right.y)
 
 func process_movement() -> void:
 	var direction := Input.get_vector("Left", "Right", "Up", "Down")
@@ -169,13 +186,13 @@ func _on_attack_cooldown_timeout() -> void:
 func _on_hitbox_body_entered(body: Node2D) -> void:
 	if body.is_in_group("enemy"):
 		damage_player()
-		if health <= 0:
-			queue_free()
 
 
 func damage_player() -> void:
 	health -= 1
 	print(health)
+	if health <= 0:
+		get_tree().change_scene_to_file("res://Scene/death.tscn")
 
 
 func _on_delete_attack_timeout() -> void:
