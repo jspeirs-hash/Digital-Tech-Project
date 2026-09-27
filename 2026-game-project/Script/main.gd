@@ -11,7 +11,10 @@ extends Node2D
 var skill_one_ready: bool = true
 var skill_two_ready: bool = true
 @export var player: CharacterBody2D
+@export var ice_sound: AudioStreamPlayer
+@export var fire_sound: AudioStreamPlayer
 
+# At start: fix the dirt tile edges and tell the player where the map ends.
 func _ready() -> void:
 	var dirt_cells: Array[Vector2i] = []
 	for cell in terrain_layer.get_used_cells():
@@ -27,9 +30,11 @@ func _ready() -> void:
 	var bottom_right = Vector2(map_rect.end * tile_size)
 	player.set_map_limits(top_left, bottom_right)
 
+# Every frame: check the skill keys.
 func _process(delta: float) -> void:
 	use_skill()
 
+# Casts a skill when its key (Q or E) is pressed and it is ready.
 func use_skill() -> void:
 	if Input.is_action_just_pressed("Skill_one") and skill_one_ready:
 		_on_skill_1_pressed()
@@ -37,15 +42,18 @@ func use_skill() -> void:
 		_on_skill_2_pressed()
 
 
+# Skill 1 (ice): spawn the burst on the player and play the ice sound.
 func _on_skill_1_pressed() -> void:
 	if not skill_one_ready:
 		return
 	var skill = scene_skillone.instantiate()
 	add_child(skill)
 	skill.global_position = player.global_position
+	ice_sound.play()
 	start_cooldown(1)
 
 
+# Skill 2 (fire): spawn the strike in the direction the player faces and play the fire sound.
 func _on_skill_2_pressed() -> void:
 	if not skill_two_ready:
 		return
@@ -53,9 +61,11 @@ func _on_skill_2_pressed() -> void:
 	add_child(skill)
 	skill.global_position = player.global_position
 	skill.rotation = player.last_direction.angle()
+	fire_sound.play()
 	start_cooldown(2)
 
 
+# Blocks a skill and greys out its button until its cooldown time has passed.
 func start_cooldown(skill_index: int) -> void:
 	if skill_index == 1:
 		skill_one_ready = false

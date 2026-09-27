@@ -5,6 +5,7 @@ extends Path2D
 @export var enemies_per_wave: int = 3
 @export var wave_growth: int = 3
 @export var time_between_waves: float = 3.0
+@export var health_growth: float = 1.0
 @export var follow: PathFollow2D
 
 var timer: float = 0.0
@@ -12,9 +13,11 @@ var wave_timer: float = 0.0
 var wave_number: int = 0
 var enemies_to_spawn: int = 0
 
+# Starts wave 1 when the game begins.
 func _ready() -> void:
 	start_next_wave()
 
+# Spawns this wave's enemies one at a time; when all are dead, waits, then starts the next wave.
 func _process(delta: float) -> void:
 	if enemies_to_spawn > 0:
 		timer += delta
@@ -28,6 +31,7 @@ func _process(delta: float) -> void:
 			wave_timer = 0.0
 			start_next_wave()
 
+# Moves to the next wave, works out how many enemies it has, and updates the wave text.
 func start_next_wave() -> void:
 	wave_number += 1
 	enemies_to_spawn = enemies_per_wave + (wave_number - 1) * wave_growth
@@ -35,6 +39,7 @@ func start_next_wave() -> void:
 	var label = get_tree().current_scene.get_node("HUD/WaveLabel")
 	label.text = "Wave " + str(wave_number)
 
+# Spawns one enemy at a random point on the path around the player, with more health each wave.
 func spawn_enemy() -> void:
 	if curve == null or curve.point_count < 2:
 		return
@@ -42,5 +47,6 @@ func spawn_enemy() -> void:
 	follow.progress_ratio = randf_range(0.0, 1.0)
 
 	var enemy = enemy_scene.instantiate()
+	enemy.health += (wave_number - 1) * health_growth
 	get_tree().current_scene.add_child(enemy)
 	enemy.global_position = follow.global_position

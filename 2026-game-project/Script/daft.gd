@@ -19,9 +19,11 @@ var can_sprint: = false
 @export var spawn_attack: Marker2D
 @export var sprite: AnimatedSprite2D
 
+# Runs once when the node starts (nothing needed here).
 func _ready() -> void:
 	pass
 
+# Every physics frame: read input, walk/dash/sprint, attack, then move.
 func _physics_process(delta: float) -> void:
 	var direction: Vector2 = Vector2.ZERO
 	direction.x = Input.get_axis("Left", "Right")
@@ -63,6 +65,7 @@ func _physics_process(delta: float) -> void:
 	
 	_animation_sprite(direction)
 
+# Picks an idle or walk animation name from the move direction (unfinished).
 func _animation_sprite(move_dir: Vector2) -> void:
 	#create var for sprite.animation so it will be shorter
 	var ani_target: String = sprite.animation
@@ -78,14 +81,17 @@ func _animation_sprite(move_dir: Vector2) -> void:
 		if abs(move_dir.x) > abs(move_dir.y):
 			if move_dir.x > 0:
 				ani_target = "walk-left_right"
+# Dash time is over: stop dashing.
 func _Duration_Dash_Timeout() -> void:
 	is_dashing = false
 	print("Duration")
 
+# Dash cooldown is over: allow dashing again.
 func _Cooldown_Dash_Timeout() -> void:
 	can_dash = true
 	print("Cooldown")
 
+# Spawns the attack scene at the attack point.
 func _attack() -> void:
 	var attack = attack_scene.instantiate()
 	attack.rotation = pivot.rotation

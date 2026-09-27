@@ -2,7 +2,7 @@ extends Node2D
 
 @export var orbit_radius: float = 5.0
 
-# Called every frame. 'delta' is the elapsed time since the previous frame.
+# Every frame: point the sword at the mouse and keep it close to the player.
 func _process(delta: float) -> void:
 	var global_mouse_pos = get_global_mouse_position()
 	

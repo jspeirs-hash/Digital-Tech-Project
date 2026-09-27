@@ -7,6 +7,8 @@
 [ext_resource type="Texture2D" uid="uid://b7s0gkotf53fg" path="res://mystic_woods_free_2.2/Iicon_32_29.png" id="5_r6jsd"]
 [ext_resource type="Script" uid="uid://enjem3m5sf76" path="res://Script/spawner.gd" id="6_spawner"]
 [ext_resource type="PackedScene" uid="uid://dscu18d40auin" path="res://Scene/Enemy.tscn" id="7_enemy"]
+[ext_resource type="AudioStream" uid="uid://csr24evoooow1" path="res://Assets/Sounds/hit.mp3" id="10_hit"]
+[ext_resource type="AudioStream" uid="uid://ddxuwnd3ng618" path="res://Assets/Sounds/sword_swing.mp3" id="11_swing"]
 
 [sub_resource type="Gradient" id="Gradient_dirt"]
 colors = PackedColorArray(0.45, 0.32, 0.17, 1, 0.45, 0.32, 0.17, 0)
@@ -433,7 +435,7 @@ _data = {
 }
 point_count = 5
 
-[node name="Player" type="CharacterBody2D" unique_id=1616124246 node_paths=PackedStringArray("camera", "pivot", "spawn_attack", "sprite", "cooldown_dash", "duration_dash", "delete_attack_timer", "dirt_trail", "attack_timer", "attack_cooldown_timer") groups=["player"]]
+[node name="Player" type="CharacterBody2D" unique_id=1616124246 node_paths=PackedStringArray("camera", "pivot", "spawn_attack", "sprite", "cooldown_dash", "duration_dash", "delete_attack_timer", "dirt_trail", "hit_sound", "swing_sound", "attack_timer", "attack_cooldown_timer") groups=["player"]]
 collision_layer = 3
 script = ExtResource("1_kelma")
 dash_duration = 0.08
@@ -446,8 +448,18 @@ cooldown_dash = NodePath("Cooldown_dash")
 duration_dash = NodePath("Duration_dash")
 delete_attack_timer = NodePath("Delete_attack")
 dirt_trail = NodePath("DirtTrail")
+hit_sound = NodePath("HitSound")
+swing_sound = NodePath("SwingSound")
 attack_timer = NodePath("something/attack_animation")
 attack_cooldown_timer = NodePath("attack_cooldown")
+
+[node name="SwingSound" type="AudioStreamPlayer" parent="." unique_id=2065028302]
+stream = ExtResource("11_swing")
+volume_db = -4.0
+
+[node name="HitSound" type="AudioStreamPlayer" parent="." unique_id=1009478518]
+stream = ExtResource("10_hit")
+volume_db = -4.0
 
 [node name="DirtTrail" type="CPUParticles2D" parent="." unique_id=160895684]
 position = Vector2(0, 8)

@@ -9,6 +9,8 @@
 [ext_resource type="Script" uid="uid://b3mildqqoabni" path="res://Script/health_ui.gd" id="6_healthui"]
 [ext_resource type="Texture2D" uid="uid://clif7a02mv4rl" path="res://2D map/kenney_tiny-town/Tilemap/grass_decor.png" id="8_decor"]
 [ext_resource type="AudioStream" uid="uid://cvfl57jhpfuag" path="res://Assets/Music/corneria.mp3" id="9_music"]
+[ext_resource type="AudioStream" path="res://Assets/Sounds/ice.mp3" id="10_ice"]
+[ext_resource type="AudioStream" path="res://Assets/Sounds/fire.mp3" id="11_fire"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_3amdw"]
 texture = ExtResource("2_r34rm")
@@ -647,7 +649,7 @@ border_color = Color(0, 0, 0, 1)
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_hpfill"]
 bg_color = Color(0.85, 0.1, 0.1, 1)
 
-[node name="Main" type="Node2D" unique_id=670405543 node_paths=PackedStringArray("terrain_layer", "skillone", "skilltwo", "player")]
+[node name="Main" type="Node2D" unique_id=670405543 node_paths=PackedStringArray("terrain_layer", "skillone", "skilltwo", "player", "ice_sound", "fire_sound")]
 script = ExtResource("5_main")
 terrain_layer = NodePath("Map/Main")
 skillone = NodePath("HUD/SkillBar/Buttons/Skill1")
@@ -655,6 +657,16 @@ skilltwo = NodePath("HUD/SkillBar/Buttons/Skill2")
 scene_skillone = ExtResource("2_1xcnr")
 scene_skilltwo = ExtResource("2_skill2")
 player = NodePath("Charactor/Player")
+ice_sound = NodePath("IceSound")
+fire_sound = NodePath("FireSound")
+
+[node name="IceSound" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("10_ice")
+volume_db = -4.0
+
+[node name="FireSound" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("11_fire")
+volume_db = -4.0
 
 [node name="Charactor" type="Node2D" parent="." unique_id=1127854383]
 
