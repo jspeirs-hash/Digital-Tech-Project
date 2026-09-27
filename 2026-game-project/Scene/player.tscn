@@ -546,11 +546,12 @@ texture = ExtResource("5_r6jsd")
 [node name="Delete_attack" type="Timer" parent="." unique_id=776469867]
 wait_time = 0.6
 
-[node name="Path2D" type="Path2D" parent="." unique_id=796971913 node_paths=PackedStringArray("follow")]
+[node name="Path2D" type="Path2D" parent="." unique_id=796971913 node_paths=PackedStringArray("follow", "player")]
 curve = SubResource("Curve2D_ivevv")
 script = ExtResource("6_spawner")
 enemy_scene = ExtResource("7_enemy")
 follow = NodePath("PathFollow2D")
+player = NodePath("..")
 
 [node name="PathFollow2D" type="PathFollow2D" parent="Path2D" unique_id=1642478306]
 position = Vector2(-213, -153)

@@ -13,6 +13,9 @@ var skill_two_ready: bool = true
 @export var player: CharacterBody2D
 @export var ice_sound: AudioStreamPlayer
 @export var fire_sound: AudioStreamPlayer
+@export var spawner: Path2D
+@export var music: AudioStreamPlayer
+@export var boss_music: AudioStreamPlayer
 
 # At start: fix the dirt tile edges and tell the player where the map ends.
 func _ready() -> void:
@@ -30,9 +33,19 @@ func _ready() -> void:
 	var bottom_right = Vector2(map_rect.end * tile_size)
 	player.set_map_limits(top_left, bottom_right)
 
-# Every frame: check the skill keys.
+# Every frame: check the skill keys and play the right music for the wave.
 func _process(delta: float) -> void:
 	use_skill()
+	update_music()
+
+# Plays the boss music during a boss wave and the normal music the rest of the time.
+func update_music() -> void:
+	if spawner.is_boss_wave and not boss_music.playing:
+		music.stop()
+		boss_music.play()
+	elif not spawner.is_boss_wave and not music.playing:
+		boss_music.stop()
+		music.play()
 
 # Casts a skill when its key (Q or E) is pressed and it is ready.
 func use_skill() -> void:

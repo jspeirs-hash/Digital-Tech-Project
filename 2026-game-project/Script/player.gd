@@ -2,11 +2,11 @@ extends CharacterBody2D
 
 #movement
 @export var walk_speed: float = 100.0
-@export var sprint_speed: float = 120.0
+@export var sprint_speed: float = 150.0
 @export var dash_speed: float = 450.0
 @export var dash_duration: float = 3.0
 @export var dash_cooldown: float = 3.0
-@export var health: float = 5.0
+@export var health: float = 10.0
 @export var camera: Camera2D
 
 var current_speed = walk_speed
@@ -21,6 +21,7 @@ var vec = Vector2.ZERO
 var animation_movement = true
 var animation = false
 var enemy = CharacterBody2D
+var max_health: float = 0.0
 
 #knockback
 var knockback: Vector2 = Vector2.ZERO
@@ -50,9 +51,9 @@ var on_attack = true
 var attacking = false
 var attack_cooldown = true
 
-# Runs once when the player starts (nothing needed here).
+# Remembers the starting health as the most the player can heal back up to.
 func _ready() -> void:
-	pass
+	max_health = health
 
 # Every physics frame: knockback or normal movement, move, stay inside the map, then attack.
 func _physics_process(delta: float) -> void:
@@ -73,6 +74,10 @@ func _physics_process(delta: float) -> void:
 func apply_knockback(dir: Vector2, force: float) -> void:
 	knockback = dir.normalized() * force
 	knockback_timer = 0.2
+
+# Gives back health, but never more than max_health.
+func heal(amount: float) -> void:
+	health = min(health + amount, max_health)
 
 # Saves the map edges and stops the camera going past them.
 func set_map_limits(top_left: Vector2, bottom_right: Vector2) -> void:
@@ -206,9 +211,9 @@ func _on_hitbox_body_entered(body: Node2D) -> void:
 		damage_player()
 
 
-# Loses 1 health and plays the hit sound; goes to the death screen at 0.
-func damage_player() -> void:
-	health -= 1
+# Loses health (1 unless told otherwise) and plays the hit sound; goes to the death screen at 0.
+func damage_player(amount: float = 1.0) -> void:
+	health -= amount
 	print(health)
 	hit_sound.play()
 	if health <= 0:

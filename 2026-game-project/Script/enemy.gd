@@ -1,7 +1,7 @@
 extends CharacterBody2D
 
-@export var speed: float = 110.0
-@export var health: float = 2.0
+@export var speed: float = 80.0
+@export var health: float = 3.0
 @export var attack_range: float = 20.0
 @export var attack_damage: float = 1.0
 @export var attack_time: float = 1.0
@@ -76,7 +76,7 @@ func _chase_and_attack(delta: float) -> void:
 # Hurts the player.
 func attack_player() -> void:
 	if player.has_method("damage_player"):
-		player.damage_player()
+		player.damage_player(attack_damage)
 
 # Takes damage when something in the "attack" group touches the slime.
 func _on_get_hit_body_entered(body: Node2D) -> void:
