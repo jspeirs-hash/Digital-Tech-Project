@@ -559,7 +559,7 @@ rotation = -0.0021929787
 
 [connection signal="body_entered" from="hitbox" to="." method="_on_hitbox_body_entered"]
 [connection signal="timeout" from="something/attack_animation" to="." method="_attack_animation_cooldown_end"]
-[connection signal="timeout" from="Cooldown_dash" to="." method="_Cooldown_Dash_Timeout"]
-[connection signal="timeout" from="Duration_dash" to="." method="_Duration_Dash_Timeout"]
+[connection signal="timeout" from="Cooldown_dash" to="." method="_on_cooldown_dash_timeout"]
+[connection signal="timeout" from="Duration_dash" to="." method="_on_duration_dash_timeout"]
 [connection signal="timeout" from="attack_cooldown" to="." method="_on_attack_cooldown_timeout"]
 [connection signal="timeout" from="Delete_attack" to="." method="_on_delete_attack_timeout"]

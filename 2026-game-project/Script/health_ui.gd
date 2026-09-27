@@ -9,10 +9,12 @@ extends Control
 
 var max_health: float = 0.0
 
+
 # Remembers the starting health and lets the portrait camera see the game world.
 func _ready() -> void:
 	max_health = player.health
 	portrait.world_2d = get_viewport().world_2d
+
 
 # Every frame: update the health bar, move the portrait camera, show the red outline at low health.
 func _process(delta: float) -> void:
