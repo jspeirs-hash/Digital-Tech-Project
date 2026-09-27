@@ -13,6 +13,9 @@ var attack_timer: float = 0.0
 var knockback: Vector2 = Vector2.ZERO
 var knockback_timer: float = 0.0
 
+#hit flash
+var hit_flash_timer: float = 0.0
+
 @export var enemy: CharacterBody2D
 @export var sprite: AnimatedSprite2D
 
@@ -20,6 +23,11 @@ func _ready() -> void:
 	player = get_tree().get_first_node_in_group("player")
 
 func _physics_process(delta: float) -> void:
+	if hit_flash_timer > 0.0:
+		hit_flash_timer -= delta
+		if hit_flash_timer <= 0.0:
+			sprite.modulate = Color(1, 1, 1)
+
 	if knockback_timer > 0.0:
 		velocity = knockback
 		knockback_timer -= delta
@@ -67,5 +75,7 @@ func _on_get_hit_body_entered(body: Node2D) -> void:
 func take_damage(amount: float = 1.0) -> void:
 	health -= amount
 	print(health)
+	sprite.modulate = Color(1, 0, 0)
+	hit_flash_timer = 0.15
 	if health <= 0:
 		queue_free()

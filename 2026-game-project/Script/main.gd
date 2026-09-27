@@ -16,10 +16,10 @@ func _ready() -> void:
 	var dirt_cells: Array[Vector2i] = []
 	for cell in terrain_layer.get_used_cells():
 		var tile_data := terrain_layer.get_cell_tile_data(cell)
-		if tile_data != null and tile_data.terrain_set == 1:
+		if tile_data != null and tile_data.terrain == 1:
 			dirt_cells.append(cell)
 	if not dirt_cells.is_empty():
-		terrain_layer.set_cells_terrain_connect(dirt_cells, 1, 0)
+		terrain_layer.set_cells_terrain_connect(dirt_cells, 0, 1)
 
 func _process(delta: float) -> void:
 	use_skill()

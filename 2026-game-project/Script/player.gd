@@ -33,6 +33,7 @@ var knockback_timer: float = 0.0
 @export var cooldown_dash: Timer
 @export var duration_dash: Timer
 @export var delete_attack_timer: Timer
+@export var dirt_trail: CPUParticles2D
 
 #attack
 @export var attack_timer: Timer
@@ -59,33 +60,33 @@ func _physics_process(delta: float) -> void:
 func apply_knockback(dir: Vector2, force: float) -> void:
 	knockback = dir.normalized() * force
 	knockback_timer = 0.2
-	
+
 func process_movement() -> void:
 	var direction := Input.get_vector("Left", "Right", "Up", "Down")
-	
+
 	if direction != vec:
 		velocity = direction * walk_speed
 		last_direction = direction
 		s_direction = direction
 	else:
 		velocity = vec
-	
+
 	process_animation(last_direction)
-	
+
 	#dashing mechanic
 	if Input.is_action_just_pressed("Dash") and can_dash and s_direction != vec:
 		is_dashing = true
 		can_dash = false
 		dash_direction = s_direction
-		
+
 		var Cooldown_timer = get_node("Cooldown_dash")
 		Cooldown_timer.wait_time = dash_cooldown
 		Cooldown_timer.start()
-		
+
 		var Duration_timer = get_node("Duration_dash")
 		Duration_timer.wait_time = dash_duration
 		Duration_timer.start()
-		
+
 	if is_dashing:
 		velocity = dash_direction * dash_speed
 	else:
@@ -97,7 +98,8 @@ func process_movement() -> void:
 		elif Input.is_action_just_released("Sprint"):
 			can_sprint = false
 			walk_speed = current_speed
-	
+
+	dirt_trail.emitting = velocity != vec
 
 func process_animation(direction) -> void:
 	if not animation_movement:
@@ -117,7 +119,7 @@ func change_animation(prefix: String, dir: Vector2) -> void:
 		sprite.play(prefix + "_up")
 	elif dir.y > 0:
 		sprite.play(prefix + "_down")
-	
+
 func _Duration_Dash_Timeout() -> void:
 	is_dashing = false
 
